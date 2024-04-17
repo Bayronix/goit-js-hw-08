@@ -71,13 +71,13 @@ const images = [
 const galleriesAll = document.querySelectorAll(".gallery");
 
 galleriesAll.forEach((gallery) => {
-  images.forEach((image) => {
+  images.forEach(({ preview, original, description }) => {
     const createImg = document.createElement("li");
     createImg.classList.add("li-class-foto");
 
     const img = document.createElement("img");
-    img.src = image.preview;
-    img.alt = image.description;
+    img.src = preview;
+    img.alt = description;
     img.width = 360;
     img.height = 200;
     img.classList.add("img-class-foto");
@@ -85,22 +85,28 @@ galleriesAll.forEach((gallery) => {
 
     gallery.appendChild(createImg);
 
-    createImg.addEventListener("click", () => {
-      const instance = basicLightbox.create(`
-        <div class="modal-content">
-          <img
-            class="lightbox-image"
-            src="${image.original}"
-            alt="${image.description}"
-          />
-        </div>
+    createImg.addEventListener("click", (event) => {
+      if (event.target === img) {
+        const instance = basicLightbox.create(`
+        <li class="gallery-item">
+  <a class="gallery-link" href="#">
+    <img
+      class="gallery-image"
+      src="${original}"
+      data-source="${original}"
+      alt="${description}"
+    />
+  </a>
+</li>
+
       `);
 
-      instance.show();
+        instance.show();
 
-      instance.element().addEventListener("click", () => {
-        instance.close();
-      });
+        instance.element().addEventListener("click", () => {
+          instance.close();
+        });
+      }
     });
   });
 });
