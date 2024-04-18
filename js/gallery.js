@@ -68,44 +68,38 @@ const images = [
 // модернізувати в css
 // підключити модуль
 
-const galleriesAll = document.querySelectorAll(".gallery");
+const galleries = document.querySelector(".gallery");
 
-galleriesAll.forEach((gallery) => {
-  images.forEach(({ preview, original, description }) => {
-    const createImg = document.createElement("li");
-    createImg.classList.add("li-class-foto");
+const allImages = images.map(({ preview, original, description }) => {
+  const createImg = document.createElement("li");
+  createImg.classList.add("li-class-foto");
 
-    const img = document.createElement("img");
-    img.src = preview;
-    img.alt = description;
-    img.width = 360;
-    img.height = 200;
-    img.classList.add("img-class-foto");
-    createImg.appendChild(img);
+  const img = document.createElement("img");
+  img.src = preview;
+  img.alt = description;
+  img.width = 360;
+  img.height = 200;
+  img.classList.add("img-class-foto");
+  createImg.appendChild(img);
 
-    gallery.appendChild(createImg);
+  galleries.appendChild(createImg);
 
-    createImg.addEventListener("click", (event) => {
-      if (event.target === img) {
-        const instance = basicLightbox.create(`
-        <li class="gallery-item">
-  <a class="gallery-link" href="#">
-    <img
-      class="gallery-image"
-      src="${original}"
-      alt="${description}"
-    />
-  </a>
-</li>
+  // Add event listener for each created image
+  createImg.addEventListener("click", (event) => {
+    if (event.target === img) {
+      const instance = basicLightbox.create(`
+            <li class="gallery-item">
+              <a class="gallery-link" href="#">
+                <img class="gallery-image" src="${original}" alt="${description}" width="1112" height="640" />
+              </a>
+            </li>
+          `);
 
-      `);
+      instance.show();
 
-        instance.show();
-
-        instance.element().addEventListener("click", () => {
-          instance.close();
-        });
-      }
-    });
+      instance.element().addEventListener("click", () => {
+        instance.close();
+      });
+    }
   });
 });
