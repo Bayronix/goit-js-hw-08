@@ -93,7 +93,6 @@ galleriesAll.forEach((gallery) => {
     <img
       class="gallery-image"
       src="${original}"
-      data-source="${original}"
       alt="${description}"
     />
   </a>
