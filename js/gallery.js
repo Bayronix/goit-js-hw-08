@@ -89,6 +89,8 @@ const markup = images
 galleries.innerHTML = markup;
 
 galleries.addEventListener("click", (event) => {
+  event.preventDefault();
+
   if (event.target.nodeName === "IMG") {
     const {
       dataset: { source },
