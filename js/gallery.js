@@ -69,37 +69,33 @@ const images = [
 // підключити модуль
 
 const galleries = document.querySelector(".gallery");
+const markup = images
+  .map(({ preview, original, description }) => {
+    return `
+    <li class="gallery-item">
+      <a class="gallery-link" href="${original}">
+        <img
+          class="gallery-image"
+          src="${preview}"
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </li>
+  `;
+  })
+  .join("");
 
-const allImages = images.map(({ preview, original, description }) => {
-  const createImg = document.createElement("li");
-  createImg.classList.add("li-class-foto");
+galleries.innerHTML = markup;
 
-  const img = document.createElement("img");
-  img.src = preview;
-  img.alt = description;
-  img.width = 360;
-  img.height = 200;
-  img.classList.add("img-class-foto");
-  createImg.appendChild(img);
-
-  galleries.appendChild(createImg);
-
-  // Add event listener for each created image
-  createImg.addEventListener("click", (event) => {
-    if (event.target === img) {
-      const instance = basicLightbox.create(`
-            <li class="gallery-item">
-              <a class="gallery-link" href="#">
-                <img class="gallery-image" src="${original}" alt="${description}" width="1112" height="640" />
-              </a>
-            </li>
-          `);
-
-      instance.show();
-
-      instance.element().addEventListener("click", () => {
-        instance.close();
-      });
-    }
-  });
+galleries.addEventListener("click", (event) => {
+  if (event.target.nodeName === "IMG") {
+    const {
+      dataset: { source },
+    } = event.target;
+    const instance = basicLightbox.create(
+      `<img src="${source}" style="max-width: 1112px; max-height: 640px;">`
+    );
+    instance.show();
+  }
 });
